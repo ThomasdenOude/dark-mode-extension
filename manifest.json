@@ -1,0 +1,16 @@
+{
+    "manifest_version": 3,
+    "name": "Dark mode",
+    "description": "Set website to dark mode, for personal use",
+    "version": "1.0",
+    "permissions": [
+        "activeTab",
+        "scripting"
+    ],
+    "action": {
+        "default_icon": "images/moon.png"
+    },
+    "background": {
+        "service_worker": "background.js"
+    }
+}
