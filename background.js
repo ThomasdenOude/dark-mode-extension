@@ -1,39 +1,51 @@
-chrome.runtime.onInstalled.addListener(() => {
-    chrome.action.setBadgeText({
-        text: "OFF",
-    });
-});
+// In light mode: show moon icon
+const toDarkTitle = "Set dark mode";
+const darkIcons = {
+    16: "images/moon-16.png",
+    32: "images/moon-32.png",
+    48: "images/moon-48.png",
+    128: "images/moon-128.png"
+}
 
-const extensions = 'https://developer.chrome.com/docs/extensions'
-const webstore = 'https://developer.chrome.com/docs/webstore'
+// In dark mode: show sun icon
+const toLightTitle = "Set light mode";
+const lightIcons = {
+    16: "images/sun-16.png",
+    32: "images/sun-32.png",
+    48: "images/sun-48.png",
+    128: "images/sun-128.png"
+}
 
 chrome.action.onClicked.addListener(async (tab) => {
-    console.log('click', tab.url);
-    if (tab.url.startsWith(extensions) || tab.url.startsWith(webstore)) {
-        // Retrieve the action badge to check if the extension is 'ON' or 'OFF'
-        const prevState = await chrome.action.getBadgeText({ tabId: tab.id });
-        // Next state will always be the opposite
-        const nextState = prevState === 'ON' ? 'OFF' : 'ON';
-        const nextIcon = prevState === 'ON' ? "moon.png" : "weather.png";
+    // Retrieve the current title
+    const currentTitle = await chrome.action.getTitle({ tabId: tab.id });
+    // Select the next title and next icon
+    const nextTitle = currentTitle === toDarkTitle ? toLightTitle : toDarkTitle;
+    const nextIcon = currentTitle === toDarkTitle ? lightIcons : darkIcons;
 
-        // Set the action badge to the next state
-        await chrome.action.setBadgeText({
-            tabId: tab.id,
-            text: nextState,
+    // Set the action tooltip to the next title
+    await chrome.action.setTitle({
+        tabId: tab.id,
+        title: nextTitle,
+    });
+
+    // Set the action icon to the next icon
+    await chrome.action.setIcon({
+        path: nextIcon,
+        tabId: tab.id
+    })
+
+    if (currentTitle === toDarkTitle) {
+        // Insert the dark mode CSS
+        await chrome.scripting.insertCSS({
+            files: ["styles/dark-mode.css"],
+            target: { tabId: tab.id },
         });
-
-        if (nextState === "ON") {
-            // Insert the CSS file when the user turns the extension on
-            await chrome.scripting.insertCSS({
-                files: ["focus-mode.css"],
-                target: { tabId: tab.id },
-            });
-        } else if (nextState === "OFF") {
-            // Remove the CSS file when the user turns the extension off
-            await chrome.scripting.removeCSS({
-                files: ["focus-mode.css"],
-                target: { tabId: tab.id },
-            });
-        }
+    } else {
+        // Remove the dark mode CSS
+        await chrome.scripting.removeCSS({
+            files: ["styles/dark-mode.css"],
+            target: { tabId: tab.id },
+        });
     }
 });
