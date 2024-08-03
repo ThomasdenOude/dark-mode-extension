@@ -2,6 +2,11 @@ html {
     filter: invert(1) hue-rotate(180deg) contrast(75%) !important;
 }
 
-html img {
+html img,
+html video {
     filter: invert(1) hue-rotate(180deg) !important;
+}
+
+* {
+    box-shadow: none !important;
 }
