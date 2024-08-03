@@ -1,0 +1,26 @@
+{
+  "name": "dark-mode-extension",
+  "version": "2.0.0",
+  "description": "Dark mode extension for Chrome",
+  "main": "background.js",
+  "scripts": {
+    "build": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Thomas-den-Oude/dark-mode-extension.git"
+  },
+  "keywords": [
+    "darkmode"
+  ],
+  "author": "Thomas den Oude",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Thomas-den-Oude/dark-mode-extension/issues"
+  },
+  "homepage": "https://github.com/Thomas-den-Oude/dark-mode-extension#readme",
+  "devDependencies": {
+    "@types/chrome": "^0.0.269",
+    "typescript": "^5.5.4"
+  }
+}
