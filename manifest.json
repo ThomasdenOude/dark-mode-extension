@@ -4,9 +4,12 @@
     "description": "Dark mode extension for Chrome",
     "version": "2.0.0",
     "permissions": [
+        "tabs",
         "activeTab",
-        "scripting"
+        "scripting",
+        "storage"
     ],
+    "host_permissions": ["*://*/*"],
     "action": {
         "default_icon": {
             "16": "src/images/moon-16.png",
@@ -14,7 +17,7 @@
             "48": "src/images/moon-48.png",
             "128": "src/images/moon-128.png"
         },
-        "default_title": "Set dark mode"
+        "default_title": "Switch to dark mode"
     },
     "background": {
         "service_worker": "background.js"

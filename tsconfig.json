@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
     "lib": [
-      "ESNext",
-      "dom"
+      "dom",
+      "ESNext"
     ],
     "rootDir": "./src",
     "outDir": "./",
