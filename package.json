@@ -4,7 +4,7 @@
   "description": "Dark mode extension for Chrome",
   "main": "background.js",
   "scripts": {
-    "build": "tsc"
+    "build": "tsc && sass src/styles/dark-mode.scss src/styles/dark-mode.css"
   },
   "repository": {
     "type": "git",
@@ -22,5 +22,8 @@
   "devDependencies": {
     "@types/chrome": "^0.0.269",
     "typescript": "^5.5.4"
+  },
+  "dependencies": {
+    "sass": "^1.77.8"
   }
 }

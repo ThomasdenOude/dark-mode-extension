@@ -1,0 +1,45 @@
+$dark: rgb(50, 50, 50) !important;
+$dark-mid: rgb(80, 80, 80) !important;
+$light-mid: rgb(170, 170, 170) !important;
+$light: rgb(210, 210, 210) !important;
+$dark-text: black !important;
+$light-text: rgb(245, 245, 245) !important;
+
+// Set background colors
+body.dm-ext-active:not(.dm-ext-keep-background, img) {
+    background-color: $dark ;
+    border-color: $dark-mid;
+    * {
+        box-shadow: none !important;
+    }
+
+    .dm-ext-dark {
+        background-color: $dark;
+        border-color: $dark-mid;
+    }
+    .dm-ext-dark-mid {
+        background-color: $dark-mid;
+        border-color: $dark-mid;
+    }
+    .dm-ext-light-mid {
+        background-color: $light-mid;
+        border-color: $light-mid;
+    }
+    .dm-ext-light {
+        background-color: $light;
+        border-color: $light-mid;
+    }
+}
+
+// Set text colors
+body.dm-ext-active {
+    *:not(.dm-ext-keep-background, .dm-ext-keep-text) {
+        color: $light-text;
+        .dm-ext-light-mid {
+            color: $dark-text;
+        }
+        .dm-ext-light {
+            color: $dark-text;
+        }
+    }
+}

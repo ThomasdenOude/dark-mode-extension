@@ -1,23 +1,9 @@
 "use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 const darkIcons = {
     16: "src/images/moon-16.png",
     32: "src/images/moon-32.png",
     48: "src/images/moon-48.png",
     128: "src/images/moon-128.png"
-};
-const darkMode = {
-    mode: "dark",
-    title: "Switch to light mode",
-    icons: darkIcons
 };
 const lightIcons = {
     16: "src/images/sun-16.png",
@@ -25,33 +11,48 @@ const lightIcons = {
     48: "src/images/sun-48.png",
     128: "src/images/sun-128.png"
 };
+const darkMode = {
+    mode: "dark",
+    title: "Switch to light mode",
+    icons: darkIcons
+};
 const lightMode = {
     mode: "light",
     title: "Switch to dark mode",
     icons: lightIcons
 };
-chrome.action.onClicked.addListener((tab) => __awaiter(void 0, void 0, void 0, function* () {
-    const currentTabId = tab.id;
-    if (currentTabId) {
-        const currentTitle = yield chrome.action.getTitle({ tabId: currentTabId });
-        const nextMode = currentTitle === lightMode.title ? darkMode : lightMode;
-        yield setTitle(currentTabId, nextMode.title);
-        yield setIcon(currentTabId, nextMode.icons);
-        yield toggleCSS(currentTabId, nextMode.mode);
-        if (tab.url) {
-            yield setPreference(tab.url, nextMode.mode);
-        }
+chrome.action.onClicked.addListener((tab) => {
+    const { id, url } = tab;
+    if (id) {
+        chrome.action.getTitle({ tabId: id }).then(title => {
+            const nextMode = title === lightMode.title ? 'dark' : 'light';
+            void setMode(id, nextMode);
+            if (url) {
+                void savePreference(url, nextMode);
+            }
+        });
     }
-}));
-chrome.tabs.onCreated.addListener((tab) => {
-    if (tab.id && tab.url) {
-        getPreference(tab.id, tab.url);
+});
+chrome.tabs.onCreated.addListener(async (tab) => {
+    const { id, url } = tab;
+    if (id && url) {
+        getPreference(id, url);
     }
 });
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-    if (changeInfo.url && tab.url) {
-        getPreference(tabId, tab.url);
+    var _a;
+    const url = (_a = tab.url) !== null && _a !== void 0 ? _a : changeInfo.url;
+    if (tabId && url) {
+        getPreference(tabId, url);
     }
+});
+chrome.tabs.onActivated.addListener((activeInfo) => {
+    const { tabId } = activeInfo;
+    chrome.tabs.get(tabId, function (tab) {
+        if (tabId && tab.url) {
+            getPreference(tabId, tab.url);
+        }
+    });
 });
 const setTitle = (tabId, nextTitle) => {
     return chrome.action.setTitle({
@@ -66,20 +67,15 @@ const setIcon = (tabId, nextIcon) => {
     });
 };
 const toggleCSS = (tabId, mode) => {
-    if (mode === 'dark') {
-        return chrome.scripting.insertCSS({
-            files: ["src/styles/dark-mode.css"],
-            target: { tabId: tabId },
-        });
-    }
-    else {
-        return chrome.scripting.removeCSS({
-            files: ["src/styles/dark-mode.css"],
-            target: { tabId: tabId },
-        });
-    }
+    return chrome.tabs.sendMessage(tabId, { mode: mode });
 };
-const setPreference = (url, preference) => {
+const setMode = (tabId, mode) => {
+    const modeInfo = mode === 'dark' ? darkMode : lightMode;
+    void setTitle(tabId, modeInfo.title);
+    void setIcon(tabId, modeInfo.icons);
+    void toggleCSS(tabId, mode);
+};
+const savePreference = (url, preference) => {
     const origin = getOrigin(url);
     const newPreference = {
         [origin]: preference
@@ -88,17 +84,13 @@ const setPreference = (url, preference) => {
 };
 const getPreference = (tabId, url) => {
     const origin = getOrigin(url);
-    chrome.storage.local.get(origin, (storedPreferences) => __awaiter(void 0, void 0, void 0, function* () {
+    chrome.storage.local.get(origin, (storedPreferences) => {
         const preference = storedPreferences[origin];
         if (preference) {
-            const preferredMode = preference === 'dark' ? darkMode : lightMode;
-            yield setTitle(tabId, preferredMode.title);
-            yield setIcon(tabId, preferredMode.icons);
-            yield toggleCSS(tabId, preferredMode.mode);
+            void setMode(tabId, preference);
         }
-    }));
+    });
 };
 const getOrigin = (url) => {
-    const urlObject = new URL(url);
-    return urlObject.origin;
+    return new URL(url).origin;
 };

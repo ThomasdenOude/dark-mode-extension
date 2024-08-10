@@ -9,7 +9,7 @@
         "scripting",
         "storage"
     ],
-    "host_permissions": ["*://*/*"],
+    "host_permissions": ["<all_urls>"],
     "action": {
         "default_icon": {
             "16": "src/images/moon-16.png",
@@ -21,5 +21,16 @@
     },
     "background": {
         "service_worker": "background.js"
-    }
+    },
+    "minimum_chrome_version": "102",
+    "omnibox": {
+        "keyword": "api"
+    },
+    "content_scripts": [
+        {
+            "js": ["set-dark-mode.js"],
+            "css": ["src/styles/dark-mode.css"],
+            "matches": ["<all_urls>"]
+        }
+    ]
 }

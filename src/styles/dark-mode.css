@@ -1,12 +1,35 @@
-html {
-    filter: invert(1) hue-rotate(180deg) contrast(75%) !important;
+body.dm-ext-active:not(.dm-ext-keep-background, img) {
+  background-color: rgb(50, 50, 50) !important;
+  border-color: rgb(80, 80, 80) !important;
+}
+body.dm-ext-active:not(.dm-ext-keep-background, img) * {
+  box-shadow: none !important;
+}
+body.dm-ext-active:not(.dm-ext-keep-background, img) .dm-ext-dark {
+  background-color: rgb(50, 50, 50) !important;
+  border-color: rgb(80, 80, 80) !important;
+}
+body.dm-ext-active:not(.dm-ext-keep-background, img) .dm-ext-dark-mid {
+  background-color: rgb(80, 80, 80) !important;
+  border-color: rgb(80, 80, 80) !important;
+}
+body.dm-ext-active:not(.dm-ext-keep-background, img) .dm-ext-light-mid {
+  background-color: rgb(170, 170, 170) !important;
+  border-color: rgb(170, 170, 170) !important;
+}
+body.dm-ext-active:not(.dm-ext-keep-background, img) .dm-ext-light {
+  background-color: rgb(210, 210, 210) !important;
+  border-color: rgb(170, 170, 170) !important;
 }
 
-html img,
-html video {
-    filter: invert(1) hue-rotate(180deg) !important;
+body.dm-ext-active *:not(.dm-ext-keep-background, .dm-ext-keep-text) {
+  color: rgb(245, 245, 245) !important;
+}
+body.dm-ext-active *:not(.dm-ext-keep-background, .dm-ext-keep-text) .dm-ext-light-mid {
+  color: black !important;
+}
+body.dm-ext-active *:not(.dm-ext-keep-background, .dm-ext-keep-text) .dm-ext-light {
+  color: black !important;
 }
 
-* {
-    box-shadow: none !important;
-}
+/*# sourceMappingURL=dark-mode.css.map */
