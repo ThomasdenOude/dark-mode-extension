@@ -142,11 +142,19 @@ const setDarkModeForNewElements = (mutationList: MutationRecord[]) => {
 const observer: MutationObserver = new MutationObserver(setDarkModeForNewElements);
 
 chrome.runtime.onMessage.addListener((message) => {
-    if (message.mode === 'dark' && body) {
+    if (
+        message.mode === 'dark' &&
+        body &&
+        !body.classList.contains(prefix + 'active')
+    ) {
         setDarkMode(body);
         observer.observe(body, mutationConfig);
     }
-    if (message.mode === 'light' && body) {
+    if (
+        message.mode === 'light' &&
+        body &&
+        body.classList.contains(prefix + 'active')
+    ) {
         body.classList.remove(prefix + 'active')
         observer.disconnect();
     }

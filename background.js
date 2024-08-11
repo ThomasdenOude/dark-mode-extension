@@ -73,7 +73,10 @@ const setMode = (tabId, mode) => {
     const modeInfo = mode === 'dark' ? darkMode : lightMode;
     void setTitle(tabId, modeInfo.title);
     void setIcon(tabId, modeInfo.icons);
-    void toggleCSS(tabId, mode);
+    void toggleCSS(tabId, mode)
+        .catch(error => {
+        console.log('Unable to toggle dark mode, content script not yet available', error);
+    });
 };
 const savePreference = (url, preference) => {
     const origin = getOrigin(url);
