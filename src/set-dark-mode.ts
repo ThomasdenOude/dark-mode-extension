@@ -11,6 +11,20 @@ type RGBA = {
 const prefix = 'dm-ext-';
 const body: HTMLBodyElement | null = document.querySelector('body');
 
+function excludeElement(element: Element | null): boolean {
+    if (!element) {
+        return true
+    }
+    const exclude: boolean =
+        element.nodeType !== 1 ||
+        element instanceof HTMLImageElement
+    if (exclude) {
+        return true
+    }
+
+    return Array.from(element.classList).some(className => className.includes('dm-ext-'));
+}
+
 function setDarkMode(body: HTMLBodyElement): void {
     const elements: NodeListOf<Element> = body.querySelectorAll('*');
     elements.forEach(element => {
@@ -20,7 +34,7 @@ function setDarkMode(body: HTMLBodyElement): void {
 }
 
 function addDarkModeClass(element: Element): void {
-    if (element instanceof HTMLImageElement) {
+    if (excludeElement(element)) {
         return
     }
     addBackgroundClass(element);
@@ -110,11 +124,30 @@ function getClassForGrayscaleElements(grayscale: number, alpha: number): DmBackg
     return 'keep-background'
 }
 
+// Only check for added nodes
+const mutationConfig = { attributes: true, childList: true, subtree: true };
+
+// For each added node, add dark mode class
+const setDarkModeForNewElements = (mutationList: MutationRecord[]) => {
+    for (const mutation of mutationList) {
+        const addedNodes = mutation.addedNodes;
+        if (addedNodes.length) {
+            addedNodes.forEach((element: Element) => {
+                addDarkModeClass(element);
+            })
+        }
+    }
+};
+
+const observer: MutationObserver = new MutationObserver(setDarkModeForNewElements);
+
 chrome.runtime.onMessage.addListener((message) => {
     if (message.mode === 'dark' && body) {
         setDarkMode(body);
+        observer.observe(body, mutationConfig);
     }
     if (message.mode === 'light' && body) {
         body.classList.remove(prefix + 'active')
+        observer.disconnect();
     }
 });

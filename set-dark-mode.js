@@ -1,6 +1,17 @@
 "use strict";
 const prefix = 'dm-ext-';
 const body = document.querySelector('body');
+function excludeElement(element) {
+    if (!element) {
+        return true;
+    }
+    const exclude = element.nodeType !== 1 ||
+        element instanceof HTMLImageElement;
+    if (exclude) {
+        return true;
+    }
+    return Array.from(element.classList).some(className => className.includes('dm-ext-'));
+}
 function setDarkMode(body) {
     const elements = body.querySelectorAll('*');
     elements.forEach(element => {
@@ -9,7 +20,7 @@ function setDarkMode(body) {
     body.classList.add(prefix + 'active');
 }
 function addDarkModeClass(element) {
-    if (element instanceof HTMLImageElement) {
+    if (excludeElement(element)) {
         return;
     }
     addBackgroundClass(element);
@@ -91,11 +102,25 @@ function getClassForGrayscaleElements(grayscale, alpha) {
     }
     return 'keep-background';
 }
+const mutationConfig = { attributes: true, childList: true, subtree: true };
+const setDarkModeForNewElements = (mutationList) => {
+    for (const mutation of mutationList) {
+        const addedNodes = mutation.addedNodes;
+        if (addedNodes.length) {
+            addedNodes.forEach((element) => {
+                addDarkModeClass(element);
+            });
+        }
+    }
+};
+const observer = new MutationObserver(setDarkModeForNewElements);
 chrome.runtime.onMessage.addListener((message) => {
     if (message.mode === 'dark' && body) {
         setDarkMode(body);
+        observer.observe(body, mutationConfig);
     }
     if (message.mode === 'light' && body) {
         body.classList.remove(prefix + 'active');
+        observer.disconnect();
     }
 });
