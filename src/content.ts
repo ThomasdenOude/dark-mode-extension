@@ -1,6 +1,7 @@
-type ColorClass = 'background' | 'text';
-type DmBackground = 'dark' | 'dark-mid' | 'light' | 'light-mid' | 'keep-background';
-type DmText = 'dark-text' | 'light-text' | 'keep-text';
+import { excludeElement} from "./app/element";
+import { ColorClass, DarkModeBackground, DarkModeText } from "./app/models/dark-mode-classes";
+import { CLASS_PREFIX as prefix } from "./app/constants/class-prefix";
+
 type RGBA = {
     r: number;
     g: number;
@@ -8,22 +9,7 @@ type RGBA = {
     a: number;
 }
 
-const prefix = 'dm-ext-';
 const body: HTMLBodyElement | null = document.querySelector('body');
-
-function excludeElement(element: Element | null): boolean {
-    if (!element) {
-        return true
-    }
-    const exclude: boolean =
-        element.nodeType !== 1 ||
-        element instanceof HTMLImageElement
-    if (exclude) {
-        return true
-    }
-
-    return Array.from(element.classList).some(className => className.includes('dm-ext-'));
-}
 
 function setDarkMode(body: HTMLBodyElement): void {
     const elements: NodeListOf<Element> = body.querySelectorAll('*');
@@ -88,7 +74,7 @@ function getRgba(colorString: string): undefined | RGBA {
     return { r, g, b, a};
 }
 
-function getClassForColoredElements(r: number, g: number, b: number, a: number, type: ColorClass): DmBackground | DmText {
+function getClassForColoredElements(r: number, g: number, b: number, a: number, type: ColorClass): DarkModeBackground | DarkModeText {
     if (!isNaN(a)) {
         r = r * a;
         g = g * a;
@@ -104,7 +90,7 @@ function getClassForColoredElements(r: number, g: number, b: number, a: number, 
     return type === 'background' ? 'keep-background' : 'keep-text';
 }
 
-function getClassForGrayscaleElements(grayscale: number, alpha: number): DmBackground {
+function getClassForGrayscaleElements(grayscale: number, alpha: number): DarkModeBackground {
     const currentGrayScale: number = isNaN(alpha) ? grayscale : grayscale * alpha;
     if (currentGrayScale < 51) {
         return 'light';
