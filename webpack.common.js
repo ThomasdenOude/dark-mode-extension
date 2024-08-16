@@ -1,0 +1,43 @@
+const path = require('path');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
+
+module.exports = {
+    entry: {
+        background: './src/background.ts',
+        content: './src/content.ts',
+    },
+    module: {
+        rules: [
+            {
+                test: /\.tsx?$/,
+                exclude: /node_modules/,
+                use: 'ts-loader',
+            },
+            {
+                test: /\.scss$/i,
+                use: [
+                    MiniCssExtractPlugin.loader,
+                    "css-loader",
+                    "sass-loader",
+                ],
+            },
+        ],
+    },
+    resolve: {
+        extensions: ['.ts', '.js'],
+    },
+    output: {
+        filename: '[name].js',
+        path: path.resolve(__dirname, 'dist'),
+        clean: true,
+    },
+    plugins: [
+        new MiniCssExtractPlugin({
+            filename: 'styles/[name].css'
+        }),
+        new CopyPlugin({
+            patterns: [{ from: 'static' }],
+        }),
+    ],
+};

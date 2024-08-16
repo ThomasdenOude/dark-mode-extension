@@ -1,3 +1,5 @@
+import './styles.scss';
+
 type Icons = {
     16: string;
     32: string;
@@ -17,17 +19,17 @@ type Preferences = {
 
 // In light mode show dark icon ( moon )
 const darkIcons: Icons = {
-    16: "src/images/moon-16.png",
-    32: "src/images/moon-32.png",
-    48: "src/images/moon-48.png",
-    128: "src/images/moon-128.png"
+    16: "images/moon-16.png",
+    32: "images/moon-32.png",
+    48: "images/moon-48.png",
+    128: "images/moon-128.png"
 }
 
 const lightIcons: Icons = {
-    16: "src/images/sun-16.png",
-    32: "src/images/sun-32.png",
-    48: "src/images/sun-48.png",
-    128: "src/images/sun-128.png"
+    16: "images/sun-16.png",
+    32: "images/sun-32.png",
+    48: "images/sun-48.png",
+    128: "images/sun-128.png"
 }
 
 const darkMode: ModeInfo = {

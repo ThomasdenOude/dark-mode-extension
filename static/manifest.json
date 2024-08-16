@@ -12,10 +12,10 @@
     "host_permissions": ["<all_urls>"],
     "action": {
         "default_icon": {
-            "16": "src/images/moon-16.png",
-            "32": "src/images/moon-32.png",
-            "48": "src/images/moon-48.png",
-            "128": "src/images/moon-128.png"
+            "16": "images/moon-16.png",
+            "32": "images/moon-32.png",
+            "48": "images/moon-48.png",
+            "128": "images/moon-128.png"
         },
         "default_title": "Switch to dark mode"
     },
@@ -28,8 +28,8 @@
     },
     "content_scripts": [
         {
-            "js": ["set-dark-mode.js"],
-            "css": ["src/styles/dark-mode.css"],
+            "js": ["content.js"],
+            "css": ["styles/background.css"],
             "matches": ["<all_urls>"]
         }
     ]
