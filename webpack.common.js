@@ -4,8 +4,8 @@ const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = {
     entry: {
-        background: './src/background.ts',
-        content: './src/content.ts',
+        background: './src/app/background.ts',
+        content: './src/app/content.ts',
     },
     module: {
         rules: [

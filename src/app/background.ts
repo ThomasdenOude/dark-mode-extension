@@ -1,4 +1,4 @@
-import './styles.scss';
+import '../styles.scss';
 
 type Icons = {
     16: string;
