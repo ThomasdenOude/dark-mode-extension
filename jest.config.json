@@ -1,22 +1,14 @@
 {
-  "moduleFileExtensions": [
-	"ts",
-	"js",
-	"json"
-  ],
-  "testMatch": [
-	"<rootDir>/src/**/*.(spec).ts"
-  ],
+  "moduleFileExtensions": ["ts", "js", "json"],
+  "testMatch": ["<rootDir>/src/**/*.(spec).ts"],
   "transform": {
-	"^.+\\.ts$": "ts-jest"
+    "^.+\\.ts$": "ts-jest"
   },
   "testEnvironment": "jsdom",
-  "reporters": [
-	"default"
-  ],
+  "reporters": ["default"],
   "coveragePathIgnorePatterns": [
-	"<rootDir>/node_modules/",
-	"<rootDir>/coverage/",
-	"<rootDir>/dist/"
+    "<rootDir>/node_modules/",
+    "<rootDir>/coverage/",
+    "<rootDir>/dist/"
   ]
 }

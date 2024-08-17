@@ -1,9 +1,6 @@
 {
   "compilerOptions": {
-    "lib": [
-      "dom",
-      "ESNext"
-    ],
+    "lib": ["dom", "ESNext"],
     "rootDir": "./src",
     "outDir": "./",
     "removeComments": true,
@@ -22,7 +19,5 @@
     "noUnusedParameters": true
   },
   "include": ["./**/*.ts"],
-  "exclude": [
-    "node_modules/**/*",
-  ]
+  "exclude": ["node_modules/**/*"]
 }

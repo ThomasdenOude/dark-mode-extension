@@ -1,40 +1,41 @@
 @use "styles/colors" as c;
 
 // Set background colors
-body.dm-ext-active:not(.dm-ext-keep-background, img) {
+body.dm-ext-active:not(.dm-ext-keep-background) {
+  background-color: c.$dark !important;
+  border-color: c.$dark-mid !important;
+
+  .dm_ext {
+    box-shadow: none !important;
+  }
+
+  .dm-ext-dark {
     background-color: c.$dark !important;
     border-color: c.$dark-mid !important;
-    * {
-        box-shadow: none !important;
-    }
-
-    .dm-ext-dark {
-        background-color: c.$dark !important;
-        border-color: c.$dark-mid !important;
-    }
-    .dm-ext-dark-mid {
-        background-color: c.$dark-mid !important;
-        border-color: c.$dark-mid !important;
-    }
-    .dm-ext-light-mid {
-        background-color: c.$light-mid !important;
-        border-color: c.$light-mid !important;
-    }
-    .dm-ext-light {
-        background-color: c.$light !important;
-        border-color: c.$light-mid !important;
-    }
+  }
+  .dm-ext-dark-mid {
+    background-color: c.$dark-mid !important;
+    border-color: c.$dark-mid !important;
+  }
+  .dm-ext-light-mid {
+    background-color: c.$light-mid !important;
+    border-color: c.$light-mid !important;
+  }
+  .dm-ext-light {
+    background-color: c.$light !important;
+    border-color: c.$light-mid !important;
+  }
 }
 
 // Set text colors
 body.dm-ext-active {
-    *:not(.dm-ext-keep-background, .dm-ext-keep-text) {
-        color: c.$light-text !important;
-        .dm-ext-light-mid {
-            color: c.$dark-text !important;
-        }
-        .dm-ext-light {
-            color: c.$dark-text !important;
-        }
+  .dm-ext:not(.dm-ext-keep-background, .dm-ext-keep-text) {
+    color: c.$light-text !important;
+    .dm-ext-light-mid {
+      color: c.$dark-text !important;
     }
+    .dm-ext-light {
+      color: c.$dark-text !important;
+    }
+  }
 }
