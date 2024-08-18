@@ -31,6 +31,11 @@ body.dm-ext-active:not(.dm-ext-keep-background) {
 body.dm-ext-active {
   .dm-ext:not(.dm-ext-keep-background, .dm-ext-keep-text) {
     color: c.$light-text !important;
+
+    button:not(:hover, :focus),
+    input::placeholder {
+      color: inherit !important;
+    }
     .dm-ext-light-mid {
       color: c.$dark-text !important;
     }
