@@ -1,48 +1,7 @@
-import "../styles.scss";
-
-type Icons = {
-  16: string;
-  32: string;
-  48: string;
-  128: string;
-};
-type Mode = "light" | "dark";
-
-type ModeInfo = {
-  mode: Mode;
-  title: string;
-  icons: Icons;
-};
-type Preferences = {
-  [key: string]: Mode;
-};
-
-// In light mode show dark icon ( moon )
-const darkIcons: Icons = {
-  16: "images/moon-16.png",
-  32: "images/moon-32.png",
-  48: "images/moon-48.png",
-  128: "images/moon-128.png",
-};
-
-const lightIcons: Icons = {
-  16: "images/sun-16.png",
-  32: "images/sun-32.png",
-  48: "images/sun-48.png",
-  128: "images/sun-128.png",
-};
-
-const darkMode: ModeInfo = {
-  mode: "dark",
-  title: "Switch to light mode",
-  icons: darkIcons,
-};
-
-const lightMode: ModeInfo = {
-  mode: "light",
-  title: "Switch to dark mode",
-  icons: lightIcons,
-};
+import "../../styles.scss";
+import { Icons } from "./models/icons";
+import { Mode, ModeInfo, ModePreferences } from "./models/mode";
+import { darkMode, lightMode } from "./constants/mode-info";
 
 chrome.action.onClicked.addListener((tab) => {
   // Respond to click on extension icon
@@ -107,7 +66,10 @@ const setIcon = (tabId: number, nextIcon: Icons): Promise<void> => {
   });
 };
 
-const toggleCSS = (tabId: number, mode: Mode): Promise<void> => {
+const sendModePreferenceMessage = (
+  tabId: number,
+  mode: Mode,
+): Promise<void> => {
   return chrome.tabs.sendMessage(tabId, { mode: mode });
 };
 
@@ -115,7 +77,7 @@ const setMode = (tabId: number, mode: Mode): void => {
   const modeInfo: ModeInfo = mode === "dark" ? darkMode : lightMode;
   void setTitle(tabId, modeInfo.title);
   void setIcon(tabId, modeInfo.icons);
-  void toggleCSS(tabId, mode).catch((error) => {
+  void sendModePreferenceMessage(tabId, mode).catch((error) => {
     console.log(
       "Unable to toggle dark mode, content script not yet available",
       error,
@@ -125,7 +87,7 @@ const setMode = (tabId: number, mode: Mode): void => {
 
 const savePreference = (url: string, preference: Mode): Promise<void> => {
   const origin = getOrigin(url);
-  const newPreference: Preferences = {
+  const newPreference: ModePreferences = {
     [origin]: preference,
   };
 
@@ -136,7 +98,7 @@ const getPreference = (tabId: number, url: string): void => {
   const origin = getOrigin(url);
 
   // Get preference for this website, and set dark or light mode according to preference
-  chrome.storage.local.get(origin, (storedPreferences: Preferences) => {
+  chrome.storage.local.get(origin, (storedPreferences: ModePreferences) => {
     const preference: Mode | undefined = storedPreferences[origin];
 
     if (preference) {
