@@ -1,4 +1,4 @@
-import { CLASS_PREFIX } from "../../constants/class-prefix";
+import { CLASS_PREFIX } from "../../../shared/constants/class-prefix";
 
 /**
  * HTMLElement type guard

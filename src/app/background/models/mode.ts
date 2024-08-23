@@ -1,6 +1,5 @@
 import { Icons } from "./icons";
-
-export type Mode = "light" | "dark";
+import { Mode } from "../../shared/models/mode";
 
 export type ModeInfo = {
   mode: Mode;

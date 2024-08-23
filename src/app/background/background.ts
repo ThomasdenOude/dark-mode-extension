@@ -1,53 +1,55 @@
 import "../../styles.scss";
 import { Icons } from "./models/icons";
-import { Mode, ModeInfo, ModePreferences } from "./models/mode";
-import { darkMode, lightMode } from "./constants/mode-info";
+import { ModeInfo } from "./models/mode";
+import { DarkMode, LightMode } from "./constants/mode-info";
+import { Mode } from "../shared/models/mode";
+import {
+  ChangeModeMessage,
+  CurrentModeResponse,
+  RequestModeMessage,
+} from "../shared/models/messages";
 
 chrome.action.onClicked.addListener((tab) => {
   // Respond to click on extension icon
-  const { id, url } = tab;
+  const { id } = tab;
   if (id) {
     // Get the current title
-    chrome.action.getTitle({ tabId: id }).then((title) => {
+    chrome.action.getTitle({ tabId: id }).then(async (title) => {
       // Select the next mode
-      const nextMode: Mode = title === lightMode.title ? "dark" : "light";
+      const changeMode: Mode =
+        title === LightMode.title ? Mode.Dark : Mode.Light;
 
-      void setMode(id, nextMode);
-
-      // Save preference for this website
-      if (url) {
-        void savePreference(url, nextMode);
-      }
+      const currentMode: Mode = await changeModeRequest(id, changeMode);
+      await setMode(id, currentMode);
     });
   }
 });
 
 chrome.tabs.onCreated.addListener(async (tab) => {
-  const { id, url } = tab;
+  const { id } = tab;
   // Respond to creating a new tab
-  if (id && url) {
+  if (id) {
     // Get preference for this website
-    getPreference(id, url);
+    await setModePreference(id);
   }
 });
 
-chrome.tabs.onUpdated.addListener((tabId: number, changeInfo, tab) => {
+chrome.tabs.onUpdated.addListener(async (tabId: number) => {
   // Respond to changes in url or page refresh
-  const url: string | undefined = tab.url ?? changeInfo.url;
 
-  if (tabId && url) {
+  if (tabId) {
     // Get preference for this website
-    getPreference(tabId, url);
+    await setModePreference(tabId);
   }
 });
 
 chrome.tabs.onActivated.addListener((activeInfo) => {
   const { tabId } = activeInfo;
   // Respond to tab switch
-  chrome.tabs.get(tabId, function (tab) {
-    if (tabId && tab.url) {
+  chrome.tabs.get(tabId, async () => {
+    if (tabId) {
       // Get preference for this website
-      getPreference(tabId, tab.url);
+      await setModePreference(tabId);
     }
   });
 });
@@ -66,47 +68,44 @@ const setIcon = (tabId: number, nextIcon: Icons): Promise<void> => {
   });
 };
 
-const sendModePreferenceMessage = (
-  tabId: number,
-  mode: Mode,
-): Promise<void> => {
-  return chrome.tabs.sendMessage(tabId, { mode: mode });
-};
-
-const setMode = (tabId: number, mode: Mode): void => {
-  const modeInfo: ModeInfo = mode === "dark" ? darkMode : lightMode;
+const setMode = async (tabId: number, mode: Mode): Promise<void> => {
+  const modeInfo: ModeInfo = mode === Mode.Dark ? DarkMode : LightMode;
   void setTitle(tabId, modeInfo.title);
   void setIcon(tabId, modeInfo.icons);
-  void sendModePreferenceMessage(tabId, mode).catch((error) => {
-    console.log(
-      "Unable to toggle dark mode, content script not yet available",
-      error,
-    );
-  });
 };
 
-const savePreference = (url: string, preference: Mode): Promise<void> => {
-  const origin = getOrigin(url);
-  const newPreference: ModePreferences = {
-    [origin]: preference,
-  };
-
-  return chrome.storage.local.set(newPreference);
+const changeModeRequest = async (tabId: number, mode: Mode): Promise<Mode> => {
+  const message: ChangeModeMessage = { changeMode: mode };
+  const response: CurrentModeResponse = await chrome.tabs
+    .sendMessage(tabId, message)
+    .catch((error) => {
+      console.log(
+        "Unable to change mode preference, content script not yet available",
+        error,
+      );
+    });
+  return response.currentMode;
 };
 
-const getPreference = (tabId: number, url: string): void => {
-  const origin = getOrigin(url);
-
-  // Get preference for this website, and set dark or light mode according to preference
-  chrome.storage.local.get(origin, (storedPreferences: ModePreferences) => {
-    const preference: Mode | undefined = storedPreferences[origin];
-
-    if (preference) {
-      void setMode(tabId, preference);
-    }
-  });
+const getModePreference = async (tabId: number): Promise<Mode | void> => {
+  const message: RequestModeMessage = { requestMode: true };
+  const response: CurrentModeResponse | void = await chrome.tabs
+    .sendMessage(tabId, message)
+    .catch((error) => {
+      console.log(
+        "Unable to get mode preference, content script not yet available",
+        error,
+      );
+    });
+  if (!response) {
+    return;
+  }
+  return response.currentMode;
 };
 
-const getOrigin = (url: string): string => {
-  return new URL(url).origin;
+const setModePreference = async (tabId: number): Promise<void> => {
+  const modePreference = await getModePreference(tabId);
+  if (modePreference) {
+    await setMode(tabId, modePreference);
+  }
 };

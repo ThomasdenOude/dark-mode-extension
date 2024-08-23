@@ -1,5 +1,7 @@
 @use "styles/colors" as c;
 
+$transition: background-color 200ms ease-in;
+
 // Set background colors
 body.dm-ext-active:not(.dm-ext-keep-background) {
   background-color: c.$dark !important;
@@ -12,18 +14,23 @@ body.dm-ext-active:not(.dm-ext-keep-background) {
   .dm-ext-dark {
     background-color: c.$dark !important;
     border-color: c.$dark-mid !important;
+    transition: $transition !important;
   }
   .dm-ext-dark-mid {
     background-color: c.$dark-mid !important;
     border-color: c.$dark-mid !important;
+    transition: $transition !important;
   }
   .dm-ext-light-mid {
     background-color: c.$light-mid !important;
     border-color: c.$light-mid !important;
+    transition: $transition !important;
+
   }
   .dm-ext-light {
     background-color: c.$light !important;
     border-color: c.$light-mid !important;
+    transition: $transition !important;
   }
 }
 

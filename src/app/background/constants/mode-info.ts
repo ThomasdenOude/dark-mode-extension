@@ -1,13 +1,14 @@
 import { ModeInfo } from "../models/mode";
-import { darkIcons, lightIcons } from "./mode-icons";
+import { DarkIcons, LightIcons } from "./mode-icons";
+import { Mode } from "../../shared/models/mode";
 
-export const darkMode: Readonly<ModeInfo> = {
-  mode: "dark",
+export const DarkMode: Readonly<ModeInfo> = {
+  mode: Mode.Dark,
   title: "Switch to light mode",
-  icons: darkIcons,
+  icons: DarkIcons,
 };
-export const lightMode: Readonly<ModeInfo> = {
-  mode: "light",
+export const LightMode: Readonly<ModeInfo> = {
+  mode: Mode.Light,
   title: "Switch to dark mode",
-  icons: lightIcons,
+  icons: LightIcons,
 };

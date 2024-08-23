@@ -16,7 +16,7 @@
     "noImplicitReturns": true,
     "noUncheckedIndexedAccess": true,
     "noUnusedLocals": true,
-    "noUnusedParameters": true
+    "noUnusedParameters": false
   },
   "include": ["./**/*.ts"],
   "exclude": ["node_modules/**/*"]
