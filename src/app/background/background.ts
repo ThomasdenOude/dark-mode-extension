@@ -19,8 +19,13 @@ chrome.action.onClicked.addListener((tab) => {
       const changeMode: Mode =
         title === LightMode.title ? Mode.Dark : Mode.Light;
 
-      const currentMode: Mode = await changeModeRequest(id, changeMode);
-      await setMode(id, currentMode);
+      const currentMode: Mode | undefined = await changeModeRequest(
+        id,
+        changeMode,
+      );
+      if (currentMode) {
+        await setMode(id, currentMode);
+      }
     });
   }
 });
@@ -74,7 +79,10 @@ const setMode = async (tabId: number, mode: Mode): Promise<void> => {
   void setIcon(tabId, modeInfo.icons);
 };
 
-const changeModeRequest = async (tabId: number, mode: Mode): Promise<Mode> => {
+const changeModeRequest = async (
+  tabId: number,
+  mode: Mode,
+): Promise<Mode | undefined> => {
   const message: ChangeModeMessage = { changeMode: mode };
   const response: CurrentModeResponse = await chrome.tabs
     .sendMessage(tabId, message)
@@ -84,10 +92,10 @@ const changeModeRequest = async (tabId: number, mode: Mode): Promise<Mode> => {
         error,
       );
     });
-  return response.currentMode;
+  return response?.currentMode;
 };
 
-const getModePreference = async (tabId: number): Promise<Mode | void> => {
+const getModePreference = async (tabId: number): Promise<Mode | undefined> => {
   const message: RequestModeMessage = { requestMode: true };
   const response: CurrentModeResponse | void = await chrome.tabs
     .sendMessage(tabId, message)
@@ -100,7 +108,7 @@ const getModePreference = async (tabId: number): Promise<Mode | void> => {
   if (!response) {
     return;
   }
-  return response.currentMode;
+  return response?.currentMode;
 };
 
 const setModePreference = async (tabId: number): Promise<void> => {

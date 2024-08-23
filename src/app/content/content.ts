@@ -61,15 +61,14 @@ function setMode(
   observer: MutationObserver,
 ): void {
   const isDarkMode: boolean = body.classList.contains(activeClass);
-  if (mode === Mode.Dark && !isDarkMode) {
-    body.classList.add(activeClass);
+  if (mode === Mode.Dark) {
+    observer.observe(body, MUTATION_CONFIG);
 
     addDarkModeClassesToBody(body);
-    observer.observe(body, MUTATION_CONFIG);
+    body.classList.add(activeClass);
   }
   if (mode === Mode.Light && isDarkMode) {
     body.classList.remove(activeClass);
-
     observer.disconnect();
   }
 }

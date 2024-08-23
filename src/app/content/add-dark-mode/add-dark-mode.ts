@@ -1,29 +1,26 @@
-import {
-  elementHasDarkModeStyling,
-  isHTMLElement,
-} from "../helpers/element/element";
 import { CLASS_PREFIX } from "../../shared/constants/class-prefix";
-import { DarkModeBackground, DarkModeText } from "../models/dark-mode-classes";
-import { getBackgroundClass, getTextClass } from "../helpers/color/color";
+import { DarkModeBackground } from "../models/dark-mode-classes";
+import { getBackgroundClass } from "../helpers/color/color";
 
 /**
  * Add dark mode classes for background and text color to element
  */
-export function addDarkModeClassesToElement(element: HTMLElement): void {
-  const classList: string[] = [CLASS_PREFIX];
-
-  const backgroundColor: string = getComputedStyle(element).backgroundColor;
-  const backgroundClass: DarkModeBackground | undefined =
-    getBackgroundClass(backgroundColor);
-  if (backgroundClass) {
-    classList.push(CLASS_PREFIX + "-" + backgroundClass);
+export function addDarkModeClassesToElement(
+  element: null | Node | Element | HTMLElement,
+): void {
+  if (
+    element instanceof HTMLElement &&
+    !element.classList.contains(CLASS_PREFIX)
+  ) {
+    const backgroundColorString: string =
+      getComputedStyle(element).backgroundColor;
+    const backgroundClass: DarkModeBackground | undefined = getBackgroundClass(
+      backgroundColorString,
+    );
+    if (backgroundClass) {
+      element.classList.add(CLASS_PREFIX, CLASS_PREFIX + "-" + backgroundClass);
+    }
   }
-  const textColor = getComputedStyle(element).color;
-  const textColorClass: DarkModeText | undefined = getTextClass(textColor);
-  if (textColorClass) {
-    classList.push(CLASS_PREFIX + "-" + textColorClass);
-  }
-  element.classList.add(...classList);
 }
 
 /**
@@ -33,9 +30,7 @@ export function addDarkModeClassesToElement(element: HTMLElement): void {
 export function addDarkModeClassesToBody(body: HTMLBodyElement): void {
   const elements: NodeListOf<Element> = body.querySelectorAll<Element>("*");
   elements.forEach((element) => {
-    if (isHTMLElement(element) && !elementHasDarkModeStyling(element)) {
-      addDarkModeClassesToElement(element);
-    }
+    addDarkModeClassesToElement(element);
   });
 }
 
@@ -51,9 +46,7 @@ export const setDarkModeForNewElements = (
     const addedNodes = mutation.addedNodes;
     if (addedNodes.length) {
       addedNodes.forEach((node: null | Node | HTMLElement) => {
-        if (isHTMLElement(node) && !elementHasDarkModeStyling(node)) {
-          addDarkModeClassesToElement(node);
-        }
+        addDarkModeClassesToElement(node);
       });
     }
   }

@@ -1,6 +1,23 @@
-$dark: rgb(50, 50, 50);
-$dark-mid: rgb(80, 80, 80);
-$light-mid: rgb(170, 170, 170);
-$light: rgb(210, 210, 210);
-$dark-text: black;
-$light-text: rgb(245, 245, 245);
+$dark: rgb(40, 40, 40) !important;;
+$dark-mid: rgb(89, 89, 89) !important;;
+$light-mid: rgb(166, 166, 166) !important;;
+$light: rgb(220, 220, 220) !important;;
+$dark-text: rgba(0, 0, 0, .9) !important;;
+$light-text: rgba(255, 255, 255, .9) !important;;
+
+$tiffany-blue: #78CDD7;
+$verdigris: #44A1A0;
+$teal: #247B7B;
+$caribbean-current: #0D5C63;
+$coral: #FF8552;
+$brown: #A33100;
+
+// Background colors
+$primary-light: $verdigris !important;;
+$primary-dark: $teal !important;;
+
+// Buttons and link elements
+$primary-action-light: $tiffany-blue !important;;
+$primary-action-dark: $caribbean-current !important;;
+$accent-action-light: $coral !important;;
+$accent-action-dark: $brown !important;;

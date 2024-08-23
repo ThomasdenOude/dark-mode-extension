@@ -3,51 +3,86 @@
 $transition: background-color 200ms ease-in;
 
 // Set background colors
-body.dm-ext-active:not(.dm-ext-keep-background) {
-  background-color: c.$dark !important;
-  border-color: c.$dark-mid !important;
+body.dm-ext-active {
+  background-color: c.$dark;
+  color: c.$light-text;
+  p,
+  h1,
+  h2,
+  h3,
+  h4 {
+    color: c.$light-text;
+  }
 
-  .dm_ext {
-    box-shadow: none !important;
+  .dm-ext-colored-background {
+    background-color: c.$primary-light;
+    border-color: c.$primary-light;
+  }
+
+  a,
+  button,
+  input {
+    border-color: c.$primary-action-light;
+  }
+  a:not(.dm-ext-colored-background) {
+    color: c.$primary-action-light;
+  }
+
+  a.dm-ext-colored-background,
+  button.dm-ext-colored-background,
+  input.dm-ext-colored-background {
+    background-color: c.$primary-action-light;
+    color: c.$dark-text;
   }
 
   .dm-ext-dark {
-    background-color: c.$dark !important;
-    border-color: c.$dark-mid !important;
-    transition: $transition !important;
+    background-color: c.$dark;
+    color: c.$light-text;
+    transition: $transition;
   }
   .dm-ext-dark-mid {
-    background-color: c.$dark-mid !important;
-    border-color: c.$dark-mid !important;
-    transition: $transition !important;
+    background-color: c.$dark-mid;
+    color: c.$light-text;
+    transition: $transition;
   }
   .dm-ext-light-mid {
-    background-color: c.$light-mid !important;
-    border-color: c.$light-mid !important;
-    transition: $transition !important;
-
+    background-color: c.$light-mid;
+    transition: $transition;
   }
   .dm-ext-light {
-    background-color: c.$light !important;
-    border-color: c.$light-mid !important;
-    transition: $transition !important;
+    background-color: c.$light;
+    transition: $transition;
+  }
+
+  .dm-ext-light,
+  .dm-ext-light-mid {
+    color: c.$light-text;
+
+    .dm-ext-colored-background {
+      background-color: c.$primary-dark;
+      border-color: c.$primary-dark;
+    }
+
+    a,
+    button,
+    input {
+      border-color: c.$primary-action-dark;
+    }
+    a:not(.dm-ext-colored-background) {
+      color: c.$primary-action-light;
+    }
+
+    a.dm-ext-colored-background,
+    button.dm-ext-colored-background,
+    input.dm-ext-colored-background {
+      background-color: c.$primary-action-dark;
+      color: c.$light-text;
+    }
+  }
+
+  * {
+    box-shadow: none !important;
+    outline: none !important;
   }
 }
 
-// Set text colors
-body.dm-ext-active {
-  .dm-ext:not(.dm-ext-keep-background, .dm-ext-keep-text) {
-    color: c.$light-text !important;
-
-    button:not(:hover, :focus),
-    input::placeholder {
-      color: inherit !important;
-    }
-    .dm-ext-light-mid {
-      color: c.$dark-text !important;
-    }
-    .dm-ext-light {
-      color: c.$dark-text !important;
-    }
-  }
-}

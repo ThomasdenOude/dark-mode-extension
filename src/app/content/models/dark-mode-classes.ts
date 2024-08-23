@@ -3,6 +3,6 @@ export type DarkModeBackground =
   | "dark-mid"
   | "light"
   | "light-mid"
-  | "keep-background";
+  | "colored-background";
 
 export type DarkModeText = "dark-text" | "light-text" | "keep-text";
