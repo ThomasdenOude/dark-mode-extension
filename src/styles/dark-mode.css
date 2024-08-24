@@ -1,12 +1,14 @@
 html {
-    filter: invert(1) hue-rotate(180deg) contrast(75%) !important;
+    filter: invert(1) hue-rotate(180deg) contrast(.8) !important;
 }
 
 html img,
-html video {
-    filter: invert(1) hue-rotate(180deg) !important;
+html video,
+[style*="url("] {
+    filter: invert(1) hue-rotate(180deg) grayscale(100)!important;
 }
 
 * {
     box-shadow: none !important;
+    outline: none !important;
 }
