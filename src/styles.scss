@@ -3,86 +3,82 @@
 $transition: background-color 200ms ease-in;
 
 // Set background colors
-body.dm-ext-active {
+html.dm-ext-active body.dm-ext-active {
   background-color: c.$dark;
   color: c.$light-text;
-  p,
-  h1,
-  h2,
-  h3,
-  h4 {
+
+
+  * {
+    outline: none !important;
+    background-color: c.$dark;
     color: c.$light-text;
+    border-color: c.$light-text;
   }
 
   .dm-ext-colored-background {
-    background-color: c.$primary-light;
-    border-color: c.$primary-light;
+    background-color: c.$primary-dark;
+    color: c.$light-text;
   }
 
-  a,
-  button,
-  input {
-    border-color: c.$primary-action-light;
+  a {
+    border-color: c.$primary-light;
+    color: c.$primary-light;
+    box-shadow: none !important;
   }
-  a:not(.dm-ext-colored-background) {
+
+
+  a:hover,
+  a:focus {
+    border-color: c.$primary-action-light;
     color: c.$primary-action-light;
   }
+  a:active,
+  a:visited {
+    border-color: c.$accent-action-light;
+    color: c.$accent-action-light;
+  }
 
-  a.dm-ext-colored-background,
+  input {
+    border-color: c.$primary-light;
+    color: c.$light-text;
+    box-shadow: none !important;
+  }
+  button,
+  [role="button"] {
+    border-color: c.$primary-light;
+    color: c.$light-text;
+    box-shadow: none !important;
+  }
+
   button.dm-ext-colored-background,
-  input.dm-ext-colored-background {
-    background-color: c.$primary-action-light;
+  [role="button"].dm-ext-colored-background,
+  a.dm-ext-colored-background {
+    background-color: c.$primary-light;
     color: c.$dark-text;
   }
 
-  .dm-ext-dark {
-    background-color: c.$dark;
-    color: c.$light-text;
-    transition: $transition;
-  }
-  .dm-ext-dark-mid {
-    background-color: c.$dark-mid;
-    color: c.$light-text;
-    transition: $transition;
-  }
-  .dm-ext-light-mid {
-    background-color: c.$light-mid;
-    transition: $transition;
-  }
-  .dm-ext-light {
-    background-color: c.$light;
-    transition: $transition;
+  button:hover,
+  button:focus,
+  button:active {
+    border-color: c.$primary-action-light;
   }
 
-  .dm-ext-light,
-  .dm-ext-light-mid {
-    color: c.$light-text;
-
-    .dm-ext-colored-background {
-      background-color: c.$primary-dark;
-      border-color: c.$primary-dark;
-    }
-
-    a,
-    button,
-    input {
-      border-color: c.$primary-action-dark;
-    }
-    a:not(.dm-ext-colored-background) {
-      color: c.$primary-action-light;
-    }
-
-    a.dm-ext-colored-background,
-    button.dm-ext-colored-background,
-    input.dm-ext-colored-background {
-      background-color: c.$primary-action-dark;
-      color: c.$light-text;
-    }
+  button.dm-ext-colored-background:hover,
+  button.dm-ext-colored-background:focus,
+  button.dm-ext-colored-background:active,
+  [role="button"].dm-ext-colored-background:hover,
+  [role="button"].dm-ext-colored-background:focus,
+  [role="button"].dm-ext-colored-background:active,
+  a.dm-ext-colored-background:hover,
+  a.dm-ext-colored-background:focus,
+  a.dm-ext-colored-background:active {
+    background-color: c.$primary-action-light;
   }
 
-  * {
-    box-shadow: none !important;
-    outline: none !important;
+  input:hover,
+  input:focus,
+  input:active {
+    border-color: c.$primary-action-light;
   }
 }
 

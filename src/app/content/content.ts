@@ -1,9 +1,5 @@
 import { CLASS_PREFIX } from "../shared/constants/class-prefix";
-import { MUTATION_CONFIG } from "./constants/mutation-config";
-import {
-  addDarkModeClassesToBody,
-  setDarkModeForNewElements,
-} from "./add-dark-mode/add-dark-mode";
+import { addColoredBackgroundClass } from "./add-dark-mode/add-dark-mode";
 import { Mode } from "../shared/models/mode";
 import {
   ChangeModeMessage,
@@ -17,13 +13,11 @@ const activeClass = CLASS_PREFIX + "-active";
 const preferenceKey = CLASS_PREFIX + "-preference";
 
 const body: HTMLBodyElement | null = document.querySelector("body");
-const observer: MutationObserver = new MutationObserver(
-  setDarkModeForNewElements,
-);
+const html: HTMLHtmlElement | null = document.querySelector("html");
 
-if (body) {
+if (body && html) {
   const preference: Mode = getPreference();
-  setMode(preference, body, observer);
+  setMode(preference, body, html);
 
   const updateMode = (
     message: RequestModeMessage | ChangeModeMessage,
@@ -37,7 +31,7 @@ if (body) {
       setPreference(preference);
     }
 
-    setMode(preference, body, observer);
+    setMode(preference, body, html);
 
     return sendResponse({ currentMode: preference });
   };
@@ -58,17 +52,16 @@ function setPreference(mode: Mode): void {
 function setMode(
   mode: Mode,
   body: HTMLBodyElement,
-  observer: MutationObserver,
+  html: HTMLHtmlElement,
 ): void {
   const isDarkMode: boolean = body.classList.contains(activeClass);
   if (mode === Mode.Dark) {
-    observer.observe(body, MUTATION_CONFIG);
-
-    addDarkModeClassesToBody(body);
+    addColoredBackgroundClass(body);
+    html.classList.add(activeClass);
     body.classList.add(activeClass);
   }
   if (mode === Mode.Light && isDarkMode) {
+    html.classList.remove(activeClass);
     body.classList.remove(activeClass);
-    observer.disconnect();
   }
 }
