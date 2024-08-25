@@ -27,5 +27,5 @@ export function isColored(colorString: string): boolean {
 }
 
 function hasColorDifference(a: number, b: number): boolean {
-  return Math.abs(a - b) > 100;
+  return Math.abs(a - b) > 80;
 }

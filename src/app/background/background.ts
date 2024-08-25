@@ -4,9 +4,8 @@ import { ModeInfo } from "./models/mode";
 import { DarkMode, LightMode } from "./constants/mode-info";
 import { Mode } from "../shared/models/mode";
 import {
-  ChangeModeMessage,
   CurrentModeResponse,
-  RequestModeMessage,
+  UpdateModeMessages,
 } from "../shared/models/messages";
 
 chrome.action.onClicked.addListener((tab) => {
@@ -54,7 +53,7 @@ chrome.tabs.onActivated.addListener((activeInfo) => {
   chrome.tabs.get(tabId, async () => {
     if (tabId) {
       // Get preference for this website
-      await setModePreference(tabId);
+      await setModePreference(tabId, true);
     }
   });
 });
@@ -83,7 +82,7 @@ const changeModeRequest = async (
   tabId: number,
   mode: Mode,
 ): Promise<Mode | undefined> => {
-  const message: ChangeModeMessage = { changeMode: mode };
+  const message: UpdateModeMessages = { changeMode: mode };
   const response: CurrentModeResponse = await chrome.tabs
     .sendMessage(tabId, message)
     .catch((error) => {
@@ -95,8 +94,10 @@ const changeModeRequest = async (
   return response?.currentMode;
 };
 
-const getModePreference = async (tabId: number): Promise<Mode | undefined> => {
-  const message: RequestModeMessage = { requestMode: true };
+const getModePreference = async (
+  tabId: number,
+  message: UpdateModeMessages,
+): Promise<Mode | undefined> => {
   const response: CurrentModeResponse | void = await chrome.tabs
     .sendMessage(tabId, message)
     .catch((error) => {
@@ -111,8 +112,15 @@ const getModePreference = async (tabId: number): Promise<Mode | undefined> => {
   return response?.currentMode;
 };
 
-const setModePreference = async (tabId: number): Promise<void> => {
-  const modePreference = await getModePreference(tabId);
+const setModePreference = async (
+  tabId: number,
+  update?: boolean,
+): Promise<void> => {
+  const message: UpdateModeMessages = update
+    ? { updateMode: true }
+    : { requestMode: true };
+
+  const modePreference = await getModePreference(tabId, message);
   if (modePreference) {
     await setMode(tabId, modePreference);
   }
