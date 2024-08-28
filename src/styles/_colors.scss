@@ -1,23 +1,23 @@
-$dark: rgb(40, 40, 40) !important;;
-$dark-mid: rgb(89, 89, 89) !important;;
-$light-mid: rgb(166, 166, 166) !important;;
-$light: rgb(220, 220, 220) !important;;
-$dark-text: rgba(0, 0, 0, .9) !important;;
-$light-text: rgba(255, 255, 255, .9) !important;;
+$black: rgb(40, 42, 42) !important;
+$dark-grey: rgb(50, 52, 52) !important;
+$mid-grey: rgb(70, 72, 72) !important;
+$light-grey: rgb(90, 92, 92) !important;
+$dark-text: rgba(0, 0, 0, 0.9) !important;
+$light-text: rgba(255, 255, 255, 0.9) !important;
 
-$tiffany-blue: #78CDD7;
-$verdigris: #44A1A0;
-$teal: #247B7B;
-$caribbean-current: #0D5C63;
-$coral: #FF8552;
-$coral-light: #fea885;
+$tiffany-blue: #5cb6c1;
+$verdigris: #44a1a0;
+$teal: #247b7b;
+$caribbean-current: #0d5c63;
+$coral: #ff8552;
+$coral-light: #fb9a72;
 
 // Background colors
-$primary-light: $verdigris !important;;
-$primary-dark: $teal !important;;
+$primary-light: $verdigris !important;
+$primary-dark: $teal !important;
 
 // Buttons and link elements
-$primary-action-light: $tiffany-blue !important;;
-$primary-action-dark: $caribbean-current !important;;
-$accent-action-dark: $coral !important;;
-$accent-action-light: $coral-light !important;;
+$primary-action-light: $tiffany-blue !important;
+$primary-action-dark: $caribbean-current !important;
+$accent-action-dark: $coral !important;
+$accent-action-light: $coral-light !important;

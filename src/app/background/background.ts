@@ -1,12 +1,12 @@
 import "../../styles.scss";
 import { Icons } from "./models/icons";
 import { ModeInfo } from "./models/mode";
-import { DarkMode, LightMode } from "./constants/mode-info";
 import { Mode } from "../shared/models/mode";
 import {
   CurrentModeResponse,
   UpdateModeMessages,
 } from "../shared/models/messages";
+import { DarkMode, LightMode } from "./constants/mode-info";
 
 chrome.action.onClicked.addListener((tab) => {
   // Respond to click on extension icon
