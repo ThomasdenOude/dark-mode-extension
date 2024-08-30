@@ -1,4 +1,6 @@
 .DS_Store
 .idea
-.tool-versions
+
 node_modules
+dist
+coverage

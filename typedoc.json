@@ -1,0 +1,11 @@
+{
+  "out": "docs",
+  "entryPoints": ["src"],
+  "exclude": ["**/node_modules/**", "**/*+(index|.spec).ts"],
+  "excludePrivate": true,
+  "excludeProtected": true,
+  "includeVersion": true,
+  "theme": "default",
+  "entryPointStrategy": "expand",
+  "commentStyle": "jsdoc"
+}

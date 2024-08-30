@@ -1,0 +1,132 @@
+@use "styles/colors" as c;
+@use "styles/scrollbar" as s;
+
+$transition: background-color 200ms ease-in;
+
+/* Only apply dark mode styling when both html and body have active class added */
+html.dm-ext-active body.dm-ext-active {
+  background-color: c.$black;
+  color: c.$light-text;
+
+  @include s.dark-scrollbar();
+
+  /* Only apply dark mode styling when they the generic .dm-ext class added */
+  .dm-ext {
+    background: transparent !important;
+    color: c.$light-text;
+    border-color: c.$light-text;
+    outline: transparent !important;
+    box-shadow: none !important;
+    @include s.dark-scrollbar();
+  }
+  .dm-ext::before,
+  .dm-ext::after {
+      background-color: transparent !important;
+  }
+
+  /* Main classes for background color */
+  .dm-ext.dm-ext-colored {
+    background-color: c.$primary-dark;
+    color: c.$light-text;
+  }
+
+  .dm-ext.dm-ext-black {
+    background-color: c.$black;
+  }
+  .dm-ext.dm-ext-dark-grey {
+    background-color: c.$dark-grey;
+  }
+  .dm-ext.dm-ext-mid-grey {
+    background-color: c.$mid-grey;
+  }
+  .dm-ext.dm-ext-light-grey {
+    background-color: c.$light-grey;
+  }
+
+  /* Link styling */
+  a.dm-ext {
+    background-color: inherit !important;
+    color: c.$primary-light;
+    border-color: c.$primary-light;
+    text-underline-position: under;
+  }
+
+  a.dm-ext:is(:hover, :focus) {
+    background-color: inherit !important;
+    color: c.$primary-action-light;
+    border-color: c.$primary-action-light;
+  }
+  a.dm-ext:is(:active, :visited) {
+    background-color: inherit !important;
+    color: c.$accent-action-dark;
+    border-color: c.$accent-action-dark;
+  }
+
+  a.dm-ext:visited:hover {
+    background-color: inherit !important;
+    color: c.$accent-action-light;
+    border-color: c.$accent-action-light;
+  }
+
+  /* Button styling ( and links that had been styled as a button ) */
+  :is(button.dm-ext, .dm-ext[role="button"]) {
+    background-color: inherit !important;
+    color: c.$light-text;
+    border-color: c.$primary-light;
+    box-shadow: none !important;
+  }
+
+  :is(button.dm-ext, .dm-ext[role="button"]):is(:hover, :focus, :active) {
+    background-color: inherit !important;
+    color: c.$light-text;
+    border-color: c.$primary-action-light;
+    box-shadow: none !important;
+  }
+
+  :is(button.dm-ext, .dm-ext[role="button"], a.dm-ext).dm-ext-colored {
+    background-color: c.$primary-light;
+    color: c.$dark-text;
+    border-color: c.$primary-light;
+    box-shadow: none !important;
+  }
+
+  :is(button.dm-ext, .dm-ext[role="button"], a.dm-ext).dm-ext-colored:is(
+      :hover,
+      :focus,
+      :active
+    ) {
+    background-color: c.$primary-action-light;
+    color: c.$dark-text;
+    border-color: c.$primary-action-light;
+    box-shadow: none !important;
+  }
+
+  input.dm-ext {
+    background-color: inherit !important;
+    color: c.$light-text;
+    border-color: c.$primary-light;
+    box-shadow: none !important;
+  }
+
+  input.dm-ext:is(:hover, :focus, :active) {
+    background-color: inherit !important;
+    color: c.$light-text;
+    border-color: c.$primary-action-light;
+    box-shadow: none !important;
+  }
+}
+
+/**
+ * @default styling for body is black color
+ */
+html.dm-ext-active body.dm-ext-active.dm-ext-dark-grey {
+  background-color: c.$dark-grey;
+}
+
+html.dm-ext-active body.dm-ext-active.dm-ext-mid-grey {
+  background-color: c.$mid-grey;
+}
+
+html.dm-ext-active body.dm-ext-active.dm-ext-light-grey {
+  background-color: c.$light-grey;
+}

@@ -1,0 +1,29 @@
+{
+  "manifest_version": 3,
+  "name": "Dark mode",
+  "description": "Dark mode extension for Chrome",
+  "version": "3.0.0",
+  "permissions": ["tabs", "activeTab", "scripting", "storage"],
+  "host_permissions": ["<all_urls>"],
+  "action": {
+    "default_icon": {
+      "16": "images/sun-16.png",
+      "32": "images/sun-32.png",
+      "48": "images/sun-48.png",
+      "128": "images/sun-128.png"
+    },
+    "default_title": "Switch to dark mode"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "minimum_chrome_version": "102",
+  "content_scripts": [
+    {
+      "js": ["content.js"],
+      "css": ["styles/background.css"],
+      "matches": ["<all_urls>"],
+      "RunAt": "document_end"
+    }
+  ]
+}

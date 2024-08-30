@@ -1,13 +1,10 @@
 {
   "compilerOptions": {
-    "lib": [
-      "dom",
-      "ESNext"
-    ],
+    "lib": ["dom", "ESNext"],
     "rootDir": "./src",
     "outDir": "./",
     "removeComments": true,
-    "target": "ES6",
+    "target": "ES2018",
     "esModuleInterop": true,
     "moduleResolution": "node",
     // Strict Checks
@@ -19,10 +16,8 @@
     "noImplicitReturns": true,
     "noUncheckedIndexedAccess": true,
     "noUnusedLocals": true,
-    "noUnusedParameters": true
+    "noUnusedParameters": false
   },
   "include": ["./**/*.ts"],
-  "exclude": [
-    "node_modules/**/*",
-  ]
+  "exclude": ["node_modules/**/*"]
 }
