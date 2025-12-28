@@ -1,4 +1,5 @@
 import "../../styles.scss";
+import browser from "webextension-polyfill";
 import { Icons } from "./models/icons";
 import { ModeInfo } from "./models/mode";
 import { Mode } from "../shared/models/mode";
@@ -8,12 +9,12 @@ import {
 } from "../shared/models/messages";
 import { DarkMode, LightMode } from "./constants/mode-info";
 
-chrome.action.onClicked.addListener((tab) => {
-  // Respond to click on extension icon
+browser.action.onClicked.addListener((tab) => {
+  // Respond to click on the extension icon
   const { id } = tab;
   if (id) {
     // Get the current title
-    chrome.action.getTitle({ tabId: id }).then(async (title) => {
+    browser.action.getTitle({ tabId: id }).then(async (title) => {
       // Select the next mode
       const changeMode: Mode =
         title === LightMode.title ? Mode.Dark : Mode.Light;
@@ -29,7 +30,7 @@ chrome.action.onClicked.addListener((tab) => {
   }
 });
 
-chrome.tabs.onCreated.addListener(async (tab) => {
+browser.tabs.onCreated.addListener(async (tab) => {
   const { id } = tab;
   // Respond to creating a new tab
   if (id) {
@@ -38,7 +39,7 @@ chrome.tabs.onCreated.addListener(async (tab) => {
   }
 });
 
-chrome.tabs.onUpdated.addListener(async (tabId: number) => {
+browser.tabs.onUpdated.addListener(async (tabId: number) => {
   // Respond to changes in url or page refresh
 
   if (tabId) {
@@ -47,10 +48,10 @@ chrome.tabs.onUpdated.addListener(async (tabId: number) => {
   }
 });
 
-chrome.tabs.onActivated.addListener((activeInfo) => {
+browser.tabs.onActivated.addListener((activeInfo) => {
   const { tabId } = activeInfo;
   // Respond to tab switch
-  chrome.tabs.get(tabId, async () => {
+  browser.tabs.get(tabId).then(async () => {
     if (tabId) {
       // Get preference for this website
       await setModePreference(tabId, true);
@@ -59,14 +60,14 @@ chrome.tabs.onActivated.addListener((activeInfo) => {
 });
 
 const setTitle = (tabId: number, nextTitle: string): Promise<void> => {
-  return chrome.action.setTitle({
+  return browser.action.setTitle({
     tabId: tabId,
     title: nextTitle,
   });
 };
 
 const setIcon = (tabId: number, nextIcon: Icons): Promise<void> => {
-  return chrome.action.setIcon({
+  return browser.action.setIcon({
     tabId: tabId,
     path: nextIcon,
   });
@@ -83,33 +84,38 @@ const changeModeRequest = async (
   mode: Mode,
 ): Promise<Mode | undefined> => {
   const message: UpdateModeMessages = { changeMode: mode };
-  const response: CurrentModeResponse = await chrome.tabs
-    .sendMessage(tabId, message)
-    .catch((error) => {
-      console.log(
-        "Unable to change mode preference, content script not yet available",
-        error,
-      );
-    });
-  return response?.currentMode;
+  try {
+    const response: CurrentModeResponse = await browser.tabs.sendMessage(
+      tabId,
+      message,
+    );
+    return response?.currentMode;
+  } catch (error) {
+    console.log(
+      "Unable to change mode preference, content script not yet available",
+      error,
+    );
+    return;
+  }
 };
 
 const getModePreference = async (
   tabId: number,
   message: UpdateModeMessages,
 ): Promise<Mode | undefined> => {
-  const response: CurrentModeResponse | void = await chrome.tabs
-    .sendMessage(tabId, message)
-    .catch((error) => {
-      console.log(
-        "Unable to get mode preference, content script not yet available",
-        error,
-      );
-    });
-  if (!response) {
+  try {
+    const response: CurrentModeResponse | void = await browser.tabs.sendMessage(
+      tabId,
+      message,
+    );
+    return response?.currentMode;
+  } catch (error) {
+    console.log(
+      "Unable to get mode preference, content script not yet available",
+      error,
+    );
     return;
   }
-  return response?.currentMode;
 };
 
 const setModePreference = async (
