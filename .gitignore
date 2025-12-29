@@ -4,3 +4,7 @@
 node_modules
 dist
 coverage
+artifacts
+
+.env
+.env.local

@@ -1,2 +1,8 @@
 [tools]
 node = "20"
+
+[env]
+_.file = ".env.local"
+
+[tasks.sign-firefox]
+run = "pnpm build:firefox:prod && web-ext sign --source-dir=dist/firefox --api-key=$AMO_JWT_ISSUER --api-secret=$AMO_JWT_SECRET --channel=unlisted -a artifacts"

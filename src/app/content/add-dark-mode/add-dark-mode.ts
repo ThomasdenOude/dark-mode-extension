@@ -1,5 +1,3 @@
-import MessageSender = chrome.runtime.MessageSender;
-
 import { getDarkModeClass } from "../helpers/color/color";
 import { getPreference, setPreference } from "../helpers/preference-storage";
 import { DarkModeClasses } from "../models/dark-mode-classes";
@@ -11,6 +9,7 @@ import {
   CurrentModeResponse,
   UpdateModeMessages,
 } from "../../shared/models/messages";
+import browser from "webextension-polyfill";
 
 const activeClass = CLASS_PREFIX + "-active";
 
@@ -35,10 +34,10 @@ export function addDarkModeClassesToElement(element: HTMLElement) {
 }
 
 /**
- *  Add dark mode classes for all child elements,
+ *  Add dark mode classes for all child elements
  *
  *   - Only applied to HTML elements
- *   - If element already has dark mode styling, they will be ignored
+ *   - If the element already has dark mode styling, they will be ignored
  *
  */
 export function addDarkModeClassesToChildren(htmlElement: HTMLElement): void {
@@ -55,7 +54,7 @@ export function addDarkModeClassesToChildren(htmlElement: HTMLElement): void {
 }
 
 /**
- * add dark mode classes to element and to all children
+ * add dark mode classes to the element and to all children
  */
 export function addDarkModeClasses(element: HTMLElement): void {
   addDarkModeClassesToElement(element);
@@ -98,7 +97,7 @@ export function setMode(
   const isDarkMode: boolean = body.classList.contains(activeClass);
 
   /**
-   * Don't run add Dark mode logic if page is already in dark mode,
+   * Don't run add Dark mode logic if the page is already in dark mode,
    * unless an update is needed
    */
   if (mode === Mode.Dark && (update || !isDarkMode)) {
@@ -117,10 +116,10 @@ export function setMode(
 }
 
 /**
- * Set the mode according to the user preference ( preference state is kept by the content script )
+ * Set the mode according to the user preference (The content script keeps track of the preference state)
  *
- * After that, listen for messages from the background script
- *  1. Notify background script of current mode preference
+ * After that, listen for messages from background script
+ *  1. Notify the background script of current mode preference
  *  2. After user clicks extension icon, change preference accordingly {@link UpdateModeMessages.changeMode}
  *  3. If user changed tab and returns to this tab, update preference {@link UpdateModeMessages.updateMode}
  */
@@ -134,9 +133,9 @@ export function initModePreference(
 
   const updateMode = (
     message: UpdateModeMessages,
-    sender: MessageSender,
+    sender: browser.Runtime.MessageSender,
     sendResponse: (response: CurrentModeResponse) => void,
-  ): void => {
+  ): true => {
     let preference: Mode = getPreference();
 
     if (message.changeMode) {
@@ -145,8 +144,9 @@ export function initModePreference(
     }
     setMode(preference, body, html, observer, message.updateMode ?? false);
 
-    return sendResponse({ currentMode: preference });
+    sendResponse({ currentMode: preference });
+    return true;
   };
 
-  chrome.runtime.onMessage.addListener(updateMode);
+  browser.runtime.onMessage.addListener(updateMode);
 }
