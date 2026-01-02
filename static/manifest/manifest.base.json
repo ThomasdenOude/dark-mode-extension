@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Dark mode",
   "description": "Dark mode extension",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "permissions": ["tabs", "activeTab", "scripting", "storage"],
   "host_permissions": ["<all_urls>"],
   "browser_specific_settings": {
