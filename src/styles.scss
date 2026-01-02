@@ -44,28 +44,23 @@ html.dm-ext-active body.dm-ext-active {
   }
 
   /* Link styling */
-  a.dm-ext {
+  a.dm-ext,
+  a.dm-ext:visited {
     background-color: inherit !important;
     color: c.$primary-light;
     border-color: c.$primary-light;
     text-underline-position: under;
   }
 
-  a.dm-ext:is(:hover, :focus) {
+  a.dm-ext:is(:hover, :focus, :visited:hover) {
     background-color: inherit !important;
     color: c.$primary-action-light;
     border-color: c.$primary-action-light;
   }
-  a.dm-ext:is(:active, :visited) {
+  a.dm-ext:is(:active) {
     background-color: inherit !important;
     color: c.$accent-action-dark;
     border-color: c.$accent-action-dark;
-  }
-
-  a.dm-ext:visited:hover {
-    background-color: inherit !important;
-    color: c.$accent-action-light;
-    border-color: c.$accent-action-light;
   }
 
   /* Button styling ( and links that had been styled as a button ) */
@@ -78,14 +73,14 @@ html.dm-ext-active body.dm-ext-active {
 
   :is(button.dm-ext, .dm-ext[role="button"]):is(:hover, :focus, :active) {
     background-color: inherit !important;
-    color: c.$light-text;
+    color: c.$white;
     border-color: c.$primary-action-light;
     box-shadow: none !important;
   }
 
   :is(button.dm-ext, .dm-ext[role="button"], a.dm-ext).dm-ext-colored {
     background-color: c.$primary-light;
-    color: c.$dark-text;
+    color: c.$light-text;
     border-color: c.$primary-light;
     box-shadow: none !important;
   }
@@ -96,19 +91,20 @@ html.dm-ext-active body.dm-ext-active {
       :active
     ) {
     background-color: c.$primary-action-light;
-    color: c.$dark-text;
+    color: c.$white;
     border-color: c.$primary-action-light;
     box-shadow: none !important;
   }
 
-  input.dm-ext {
+  input.dm-ext,
+  .dm-ext[role="search"] {
     background-color: inherit !important;
     color: c.$light-text;
     border-color: c.$primary-light;
     box-shadow: none !important;
   }
 
-  input.dm-ext:is(:hover, :focus, :active) {
+  :is(input.dm-ext, .dm-ext[role="search"]):is(:hover, :focus, :active) {
     background-color: inherit !important;
     color: c.$light-text;
     border-color: c.$primary-action-light;
